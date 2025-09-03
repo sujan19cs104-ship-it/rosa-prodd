@@ -13,10 +13,67 @@ import {
 import session from "express-session";
 import bcrypt from "bcryptjs";
 import { syncGoogleCalendarToBookings } from "./jobs/sync-google-calendar";
+import { google } from 'googleapis';
+import fs from 'fs';
 
 // Receiver: Google Calendar push or custom webhook to create bookings
 // POST /api/webhooks/booking { title, startTime, endTime, theatreName?, guests?, customerName?, phoneNumber? }
+// GET /api/webhooks/booking?code=... (OAuth callback)
 export function registerWebhookRoutes(app: Express) {
+  // Handle Google OAuth callback (GET request with code parameter)
+  app.get('/api/webhooks/booking', async (req: any, res) => {
+    try {
+      const code = req.query.code;
+      const error = req.query.error;
+      
+      if (error) {
+        console.error('OAuth error:', error);
+        return res.status(400).send(`OAuth error: ${error}`);
+      }
+      
+      if (!code) {
+        return res.status(400).send('Missing authorization code');
+      }
+      
+      // Load credentials from environment variables
+      const client_id = process.env.GOOGLE_CLIENT_ID;
+      const client_secret = process.env.GOOGLE_CLIENT_SECRET;
+      const redirect_uri = process.env.GOOGLE_REDIRECT_URI;
+      
+      if (!client_id || !client_secret || !redirect_uri) {
+        return res.status(500).send('Missing Google OAuth configuration');
+      }
+      
+      const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
+      
+      try {
+        const { tokens } = await oAuth2Client.getToken({ code, redirect_uri });
+        
+        // Save tokens to token.json
+        fs.writeFileSync('token.json', JSON.stringify(tokens, null, 2));
+        console.log('✅ Google OAuth token saved successfully');
+        
+        res.status(200).send(`
+          <html>
+            <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
+              <h2 style="color: green;">✅ Authorization Complete!</h2>
+              <p>Google Calendar sync has been successfully configured.</p>
+              <p>You can now close this window and return to your application.</p>
+              <script>setTimeout(() => window.close(), 3000);</script>
+            </body>
+          </html>
+        `);
+      } catch (tokenError) {
+        console.error('Error exchanging code for tokens:', tokenError);
+        res.status(500).send('Failed to exchange authorization code for tokens');
+      }
+    } catch (e) {
+      console.error('OAuth callback error:', e);
+      res.status(500).send('Internal server error during OAuth callback');
+    }
+  });
+
+  // Handle booking creation (POST request)
   app.post('/api/webhooks/booking', async (req: any, res) => {
     try {
       const body = req.body || {};

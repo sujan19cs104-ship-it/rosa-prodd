@@ -7,11 +7,20 @@ export type GoogleClients = {
 };
 
 function loadCredentials() {
-  const raw = fs.readFileSync('credentials.json', 'utf8');
-  const parsed = JSON.parse(raw);
-  const conf = parsed.installed ?? parsed.web;
-  if (!conf) throw new Error('Invalid credentials.json: expected "installed" or "web" root');
-  return conf;
+  // Load credentials from environment variables instead of credentials.json
+  const client_id = process.env.GOOGLE_CLIENT_ID;
+  const client_secret = process.env.GOOGLE_CLIENT_SECRET;
+  const redirect_uri = process.env.GOOGLE_REDIRECT_URI;
+  
+  if (!client_id || !client_secret || !redirect_uri) {
+    throw new Error('Missing Google OAuth credentials in environment variables. Please set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REDIRECT_URI.');
+  }
+  
+  return {
+    client_id,
+    client_secret,
+    redirect_uris: [redirect_uri]
+  };
 }
 
 function loadToken() {

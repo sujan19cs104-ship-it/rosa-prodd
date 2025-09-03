@@ -11,19 +11,20 @@ import { spawn } from "child_process";
 const TOKEN_PATH = "token.json";
 
 function loadCredentials() {
-  const raw = fs.readFileSync("credentials.json", "utf8");
-  const parsed = JSON.parse(raw);
-  const conf = parsed.installed ?? parsed.web;
-  if (!conf) {
-    throw new Error('Invalid credentials.json: expected "installed" or "web" root');
+  // Load credentials from environment variables instead of credentials.json
+  const client_id = process.env.GOOGLE_CLIENT_ID;
+  const client_secret = process.env.GOOGLE_CLIENT_SECRET;
+  const redirect_uri = process.env.GOOGLE_REDIRECT_URI;
+  
+  if (!client_id || !client_secret || !redirect_uri) {
+    throw new Error('Missing Google OAuth credentials in environment variables. Please set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REDIRECT_URI.');
   }
-  if (!conf.client_id || !conf.client_secret) {
-    throw new Error("credentials.json missing client_id or client_secret");
-  }
-  if (!Array.isArray(conf.redirect_uris) || conf.redirect_uris.length === 0) {
-    throw new Error("credentials.json missing redirect_uris array");
-  }
-  return conf;
+  
+  return {
+    client_id,
+    client_secret,
+    redirect_uris: [redirect_uri]
+  };
 }
 
 function tryOpenInBrowser(url) {
