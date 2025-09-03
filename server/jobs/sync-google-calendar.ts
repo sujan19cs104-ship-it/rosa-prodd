@@ -136,7 +136,7 @@ export async function syncGoogleCalendarToBookings(options?: { calendarId?: stri
     }
   } catch {}
 
-  const { calendar } = getGoogleClients();
+  const { calendar } = await getGoogleClients();
   const calendarId = options?.calendarId || 'primary';
 
   // Default window: from config syncWindowDays

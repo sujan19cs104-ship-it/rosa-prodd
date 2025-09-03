@@ -1772,6 +1772,43 @@ export const storage = {
     });
   },
 
+  // Google OAuth Token operations
+  async getGoogleToken() {
+    try {
+      const config = await db.query.configurations.findFirst({
+        where: eq(configurations.key, 'googleOAuthToken')
+      });
+      return config ? JSON.parse(config.value) : null;
+    } catch (error) {
+      console.error('Error getting Google OAuth token:', error);
+      return null;
+    }
+  },
+
+  async setGoogleToken(tokens: any, updatedBy?: string) {
+    try {
+      await db.insert(configurations)
+        .values({
+          key: 'googleOAuthToken',
+          value: JSON.stringify(tokens),
+          updatedBy: updatedBy || 'system'
+        })
+        .onConflictDoUpdate({
+          target: configurations.key,
+          set: {
+            value: JSON.stringify(tokens),
+            updatedBy: updatedBy || 'system',
+            updatedAt: sql`(CURRENT_TIMESTAMP)`
+          }
+        });
+      console.log('✅ Google OAuth tokens saved to database');
+      return true;
+    } catch (error) {
+      console.error('Error saving Google OAuth token:', error);
+      throw error;
+    }
+  },
+
   async getRevenueProgress(month: string) {
     // Get the goal for the month
     const goal = await this.getMonthlyGoal(month);

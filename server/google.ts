@@ -1,5 +1,5 @@
-import fs from 'fs';
 import { google } from 'googleapis';
+import { storage } from './storage';
 
 export type GoogleClients = {
   oAuth2Client: any;
@@ -23,14 +23,22 @@ function loadCredentials() {
   };
 }
 
-function loadToken() {
-  const raw = fs.readFileSync('token.json', 'utf8');
-  return JSON.parse(raw);
+async function loadToken() {
+  try {
+    const tokenData = await storage.getGoogleToken();
+    if (!tokenData) {
+      throw new Error('Google OAuth token not found. Please run the OAuth setup first.');
+    }
+    return tokenData;
+  } catch (error) {
+    console.error('Error loading Google OAuth token:', error);
+    throw error;
+  }
 }
 
-export function getGoogleClients(): GoogleClients {
+export async function getGoogleClients(): Promise<GoogleClients> {
   const creds = loadCredentials();
-  const token = loadToken();
+  const token = await loadToken();
   const { client_id, client_secret, redirect_uris } = creds;
   const redirectUri = Array.isArray(redirect_uris) && redirect_uris.length ? redirect_uris[0] : undefined;
   const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirectUri);

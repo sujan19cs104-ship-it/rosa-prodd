@@ -14,7 +14,6 @@ import session from "express-session";
 import bcrypt from "bcryptjs";
 import { syncGoogleCalendarToBookings } from "./jobs/sync-google-calendar";
 import { google } from 'googleapis';
-import fs from 'fs';
 
 // Receiver: Google Calendar push or custom webhook to create bookings
 // POST /api/webhooks/booking { title, startTime, endTime, theatreName?, guests?, customerName?, phoneNumber? }
@@ -49,8 +48,8 @@ export function registerWebhookRoutes(app: Express) {
       try {
         const { tokens } = await oAuth2Client.getToken({ code, redirect_uri });
         
-        // Save tokens to token.json
-        fs.writeFileSync('token.json', JSON.stringify(tokens, null, 2));
+        // Save tokens to database
+        await storage.setGoogleToken(tokens, 'oauth-callback');
         console.log('✅ Google OAuth token saved successfully');
         
         res.status(200).send(`
