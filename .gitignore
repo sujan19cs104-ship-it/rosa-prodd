@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+server/public
+vite.config.ts.*
+*.tar.gz
+
+# Secrets and local tokens
+credentials.json
+token.json
+
+# Local database file
+rosae.db

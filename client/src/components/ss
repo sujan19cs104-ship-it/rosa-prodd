@@ -1,0 +1,8 @@
+the "Current Revenue" and the Monthly Revenue Goal section is not  having the same value fix the above error and do the below change also below is the issue tep 1: Fix Revenue Calculation Issue
+The issue is that the dashboard shows different revenue values because:
+
+"Selected Month Revenue" uses net revenue (after refunds) from daily revenue API
+"Current Revenue" in goal progress uses gross revenue (before refunds) from revenue progress API
+some changes are made check them accordingly and update 
+
+where ever i am asking for selecting time slots , over there add an dropdown option where i can choose the timeslots , we are syncing the timeslots from the timeslots which we enter in the others page , the logic is applied in the all bookings page , do the same for all the pages where ever i am asking for entering timeslots 

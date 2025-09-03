@@ -1,0 +1,379 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222, 84%, 4.9%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215.4, 16.3%, 46.9%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222, 84%, 4.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222, 84%, 4.9%);
+  --border: hsl(214.3, 31.8%, 91.4%);
+  --input: hsl(214.3, 31.8%, 91.4%);
+  --primary: hsl(222, 47.4%, 11.2%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(210, 40%, 96%);
+  --secondary-foreground: hsl(222, 47.4%, 11.2%);
+  --accent: hsl(210, 40%, 96%);
+  --accent-foreground: hsl(222, 47.4%, 11.2%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(222, 84%, 4.9%);
+  --radius: 0.5rem;
+
+  /* ROSAE Brand Colors */
+  --rosae-red: hsl(0, 73%, 48%);
+  --rosae-dark-red: hsl(0, 67%, 36%);
+  --rosae-black: hsl(220, 26%, 9%);
+  --rosae-dark-gray: hsl(217, 33%, 17%);
+}
+
+.dark {
+  --background: hsl(220, 26%, 9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(217, 33%, 17%);
+  --muted-foreground: hsl(215, 20.2%, 65.1%);
+  --popover: hsl(220, 26%, 9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(217, 33%, 17%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(217, 33%, 17%);
+  --input: hsl(217, 33%, 17%);
+  --primary: hsl(0, 73%, 48%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(217, 33%, 17%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(217, 33%, 17%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(217, 33%, 17%);
+
+  /* ROSAE Brand Colors for Dark Mode */
+  --rosae-red: hsl(0, 73%, 48%);
+  --rosae-dark-red: hsl(0, 67%, 36%);
+  --rosae-black: hsl(220, 26%, 9%);
+  --rosae-dark-gray: hsl(217, 33%, 17%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-rosae-black text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ROSAE Brand Color Utilities */
+  .bg-rosae-red {
+    background-color: var(--rosae-red);
+  }
+
+  .bg-rosae-dark-red {
+    background-color: var(--rosae-dark-red);
+  }
+
+  .bg-rosae-black {
+    background-color: var(--rosae-black);
+  }
+
+  .bg-rosae-dark-gray {
+    background-color: var(--rosae-dark-gray);
+  }
+
+  .text-rosae-red {
+    color: var(--rosae-red);
+  }
+
+  .text-rosae-dark-red {
+    color: var(--rosae-dark-red);
+  }
+
+  .border-rosae-red {
+    border-color: var(--rosae-red);
+  }
+
+  .hover\:bg-rosae-red:hover {
+    background-color: var(--rosae-red);
+  }
+
+  .hover\:bg-rosae-dark-red:hover {
+    background-color: var(--rosae-dark-red);
+  }
+
+  .hover\:text-rosae-red:hover {
+    color: var(--rosae-red);
+  }
+
+  .hover\:text-rosae-dark-red:hover {
+    color: var(--rosae-dark-red);
+  }
+
+  /* Focus states for form inputs */
+  .focus\:border-rosae-red:focus {
+    border-color: var(--rosae-red);
+  }
+
+  .focus\:ring-rosae-red:focus {
+    --tw-ring-color: var(--rosae-red);
+  }
+
+  /* Custom scrollbar for dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(217, 33%, 17%);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(215, 20.2%, 65.1%);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--rosae-red);
+  }
+
+  /* Ensure form elements have proper text color in dark mode */
+  .dark input,
+  .dark select,
+  .dark textarea {
+    color: white;
+  }
+
+  .dark input::placeholder {
+    color: rgb(156, 163, 175); /* gray-400 */
+  }
+
+  /* Fix for Radix UI Select components */
+  .dark [data-radix-select-trigger],
+  .dark [data-radix-select-content],
+  .dark [data-radix-select-item] {
+    color: white !important;
+  }
+
+  .dark [data-radix-select-item]:hover,
+  .dark [data-radix-select-item]:focus {
+    background-color: rgb(75, 85, 99) !important; /* gray-600 */
+  }
+}
+
+@layer components {
+  /* Custom button variants for ROSAE theme */
+  .btn-rosae-primary {
+    @apply bg-rosae-red hover:bg-rosae-dark-red text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+  }
+
+  .btn-rosae-outline {
+    @apply border-2 border-rosae-red text-rosae-red hover:bg-rosae-red hover:text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105;
+  }
+
+  /* Enhanced card styles */
+  .rosae-card {
+    @apply bg-rosae-dark-gray border border-gray-600 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300;
+  }
+
+  .rosae-card-hover {
+    @apply rosae-card hover:border-rosae-red/50 hover:-translate-y-1;
+  }
+
+  /* Professional glass effect cards */
+  .glass-card {
+    @apply backdrop-blur-xl bg-gray-900/80 border border-gray-700/50 rounded-xl shadow-2xl;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+
+  /* Enhanced input styles */
+  .rosae-input {
+    @apply bg-gray-800 border border-gray-600 text-white placeholder-gray-400 focus:border-rosae-red focus:ring-2 focus:ring-red-500/20 focus:outline-none rounded-lg transition-all duration-200 focus:scale-[1.02];
+  }
+
+  /* Enhanced select styles */
+  .rosae-select {
+    @apply bg-gray-800 border border-gray-600 text-white focus:border-rosae-red focus:ring-2 focus:ring-red-500/20 focus:outline-none rounded-lg transition-all duration-200;
+  }
+
+  /* Professional table styling */
+  .professional-table {
+    @apply w-full border-separate border-spacing-0 rounded-lg overflow-hidden;
+  }
+  
+  .professional-table th {
+    @apply bg-gradient-to-r from-gray-800 to-gray-700 text-gray-200 font-semibold text-sm uppercase tracking-wider px-6 py-4 text-left border-b border-gray-600;
+  }
+  
+  .professional-table td {
+    @apply px-6 py-4 text-white border-b border-gray-700 transition-all duration-200;
+  }
+  
+  .professional-table tbody tr:hover {
+    @apply bg-gray-800/50 transform scale-[1.01];
+  }
+
+  .professional-table tbody tr:hover td {
+    @apply shadow-lg;
+  }
+
+  /* Enhanced KPI cards */
+  .kpi-card {
+    @apply bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-xl p-6 hover:border-red-500/50 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1;
+  }
+
+  /* Professional loading states */
+  .loading-shimmer {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Enhanced badge styles */
+  .rosae-badge {
+    @apply px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 hover:scale-105;
+  }
+
+  .rosae-badge-success {
+    @apply rosae-badge bg-green-600/20 text-green-400 border border-green-600/30;
+  }
+
+  .rosae-badge-warning {
+    @apply rosae-badge bg-yellow-600/20 text-yellow-400 border border-yellow-600/30;
+  }
+
+  .rosae-badge-error {
+    @apply rosae-badge bg-red-600/20 text-red-400 border border-red-600/30;
+  }
+
+  .rosae-badge-info {
+    @apply rosae-badge bg-blue-600/20 text-blue-400 border border-blue-600/30;
+  }
+
+  .rosae-badge-primary {
+    @apply rosae-badge bg-red-600/20 text-red-400 border border-red-600/30;
+  }
+
+  /* Professional modal styling */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50;
+  }
+
+  .modal-content {
+    @apply bg-gray-800 border border-gray-600 rounded-xl shadow-2xl max-w-2xl w-full mx-4;
+  }
+
+  /* Enhanced sidebar styling */
+  .sidebar-professional {
+    @apply backdrop-blur-xl bg-gray-900/95 border-r border-gray-700/50;
+    box-shadow: 4px 0 24px -2px rgba(0, 0, 0, 0.12), 2px 0 8px -2px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Professional status indicators */
+  .status-indicator {
+    @apply relative;
+  }
+  
+  .status-indicator::before {
+    content: '';
+    @apply absolute -top-1 -right-1 w-3 h-3 rounded-full animate-pulse;
+  }
+  
+  .status-indicator.status-success::before {
+    @apply bg-green-400 shadow-lg shadow-green-400/50;
+  }
+  
+  .status-indicator.status-warning::before {
+    @apply bg-yellow-400 shadow-lg shadow-yellow-400/50;
+  }
+  
+  .status-indicator.status-error::before {
+    @apply bg-red-400 shadow-lg shadow-red-400/50;
+  }
+
+  /* Professional typography */
+  .text-gradient {
+    @apply bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-rosae {
+    @apply bg-gradient-to-r from-rosae-red via-red-400 to-rosae-red bg-clip-text text-transparent;
+  }
+
+  /* Enhanced print styles */
+  @media print {
+    .print-hidden {
+      display: none !important;
+    }
+    
+    .print-page-break {
+      page-break-before: always;
+    }
+    
+    body {
+      @apply text-black bg-white;
+    }
+    
+    .print-table {
+      @apply border-collapse border border-gray-400;
+    }
+    
+    .print-table th,
+    .print-table td {
+      @apply border border-gray-400 p-2 text-sm;
+    }
+
+    .print-header {
+      @apply mb-6 pb-4 border-b-2 border-gray-300;
+    }
+
+    .print-kpi-grid {
+      @apply grid grid-cols-3 gap-4 mb-6;
+    }
+
+    .print-kpi-card {
+      @apply border border-gray-300 p-3 rounded text-center;
+    }
+  }
+}
+
+/* Animation utilities */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
